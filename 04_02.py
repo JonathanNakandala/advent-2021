@@ -63,9 +63,7 @@ class BingoBoard:
         for y_idx, y in enumerate(self.playboard):
             for x_idx, x in enumerate(y):
                 if self.playboard[x_idx][y_idx]["value"] == number:
-                    print(
-                        f'x Val: {x["value"]} number:{number} and {self.playboard[x_idx][y_idx]["value"]} '
-                    )
+                    # print(f'x Val: {x["value"]} number:{number} and {self.playboard[x_idx][y_idx]["value"]} ')
                     self.playboard[x_idx][y_idx]["hit"] = True
 
     def __check_win_column(self):
@@ -77,7 +75,7 @@ class BingoBoard:
                 and self.playboard[3][x]["hit"]
                 and self.playboard[4][x]["hit"]
             ):
-                print("Winning Column Number: {x}")
+                # print(f"Winning Row number: {x}")
                 return True
         return False
 
@@ -90,7 +88,7 @@ class BingoBoard:
                 and self.playboard[x][3]["hit"]
                 and self.playboard[x][4]["hit"]
             ):
-                print(f"Winning Row number: {x}")
+                # print(f"winning Row number: {x}")
                 return True
         return False
 
@@ -122,22 +120,26 @@ for line in lines:
 
 winning_board_index = None
 winning_number = None
+winning_boards_list = []
+print(f"Total Boards: {len(boards)}")
+
 for number_index, number in enumerate(numbers):
-    print(number)
     for board_index, board in enumerate(boards):
         board.set_number(number)
 
     for check_board_index, check_board in enumerate(boards):
-        if check_board.check_win() == True:
-            winning_board_index = check_board_index
-            winning_number = number
-            print(
-                f"Winning Number: {number} which has the index {number_index} and Board index: {winning_board_index}"
-            )
-            winning_sum = boards[winning_board_index].sum_of_unmarked()
-            print(f"Winning Sum: {winning_sum} Answer: {winning_sum*winning_number}")
-            break
-        if winning_board_index is not None:
-            break
-    if winning_board_index is not None:
-        break
+        if check_board_index not in winning_boards_list:
+            if check_board.check_win() == True:
+                winning_board_index = check_board_index
+                winning_number = number
+                print(
+                    f"Winning Number: {number} and Board index: {winning_board_index}"
+                )
+                winning_sum = boards[check_board_index].sum_of_unmarked()
+                print(
+                    f"Winning Sum: {winning_sum} Answer: {winning_sum*winning_number}"
+                )
+                winning_boards_list.append(check_board_index)
+
+
+# print(boards[winning_board_index].get_data())
